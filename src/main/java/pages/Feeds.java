@@ -52,7 +52,7 @@ public class Feeds {
         List<WebElement> webElements = list_of_feeds;
 
         int timer = 1;
-        while (webElements.size()==0 && timer<=3) {
+        while (webElements.size()==0 && timer<5) {
             Thread.sleep(3000);
             webElements = driver.findElements(By.xpath("//ul[contains(@class, 'tag-list')]"));
             timer++;
@@ -70,29 +70,44 @@ public class Feeds {
         return elements_tags;
     }
 
-    public List<WebElement> find_Tag_Elements (WebDriver driver, String tagName) {
+    public List<WebElement> find_Tag_Elements (WebDriver driver, String tagName) throws Exception {
         List<WebElement> elementList = new ArrayList<>();
 
-        for (WebElement element : tag_Names) {
-            String text = new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(element)).getText();
-            if (text.equals(tagName)) {
-                elementList.add(element);
+        int timer = 1;
+        while (elementList.isEmpty() && timer <= 5) {
+            timer++;
+            for (WebElement element : tag_Names) {
+                String text = new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(element)).getText();
+                if (text.equals(tagName)) {
+                    elementList.add(element);
+                }
+            }
+            if (elementList.isEmpty()) {
+                Thread.sleep(3000);
             }
         }
         return elementList;
     }
 
-    public List<WebElement> find_Tag_Elements (WebDriver driver) {
+    public List<WebElement> find_Tag_Elements (WebDriver driver) throws Exception {
         List<WebElement> elementList = new ArrayList<>();
-        for (WebElement element : tag_Names) {
-            String text = new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(element)).getText();
 
-            if (text!=null) {
-                text=text.trim();
-                if (!text.equals("")) {
-                    System.out.println("text:" + text + ":with length:"+text.length());
-                    elementList.add(element);
+        int timer = 1;
+        while (elementList.isEmpty() && timer <= 5) {
+            timer++;
+            for (WebElement element : tag_Names) {
+                String text = new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(element)).getText();
+
+                if (text != null) {
+                    text = text.trim();
+                    if (!text.equals("")) {
+                        System.out.println("text:" + text + ":with length:" + text.length());
+                        elementList.add(element);
+                    }
                 }
+            }
+            if (elementList.isEmpty()) {
+                Thread.sleep(3000);
             }
         }
         return elementList;

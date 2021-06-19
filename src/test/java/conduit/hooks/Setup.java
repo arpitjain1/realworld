@@ -31,6 +31,5 @@ public class Setup {
         driver.manage().window().maximize();
         String path = TestConfig.getResource("hosturl");
         driver.get(path);
-        Thread.sleep(5000);
     }
 }

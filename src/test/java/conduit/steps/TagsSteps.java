@@ -23,9 +23,11 @@ public class TagsSteps {
 
     @Given("^I filter the page by \"([^\"]*)\" tag that is \"([^\"]*)\"$")
     public void i_filter_by_tag (String tag, String validityCheck) throws Exception {
+        // Find all the elements of the given tag
         feeds = new Feeds(driverToUse);
         List<WebElement> elementList = feeds.find_Tag_Elements(driverToUse, tag);
 
+        // Check for invalid tags
         if (elementList==null || elementList.size()==0) {
             if (validityCheck.equals("invalid")) {
                 System.out.println("Expected to be no tags present for " + tag);
@@ -33,7 +35,11 @@ public class TagsSteps {
             }
             Assert.fail("Specified tag are taking too much time to load, failing the test");
         }
+        if (validityCheck.equals("invalid")) {
+            Assert.fail(tag + " found on the page, which should not be present, as it is invalid");
+        }
 
+        // Pick one of the element in random and verify all entries on UI
         Random random = new Random();
         int num = random.ints(0,elementList.size()).findFirst().getAsInt();
         WebElement element = elementList.get(num);
@@ -43,10 +49,11 @@ public class TagsSteps {
 
     @And("^I verify for all occurrences of \"([^\"]*)\" tag on the page$")
     public void i_verify_for_all_occurrences_of_tag (String tag) throws Exception {
+        // Check filtering for all the occurrences of given tag present on the page
         List<String> results = feeds.list_all_elements(driverToUse);
 
         if (results==null || results.size()==0) {
-            Assert.fail(tag + " tag found on the page");
+            Assert.fail(tag + " tag not found on the page");
         }
 
         for (String result : results) {
@@ -60,6 +67,7 @@ public class TagsSteps {
 
     @And("^I verify for \"([^\"]*)\" tag on the feed title$")
     public void i_verify_for_title (String tag) {
+        // Get list of titles
         List<String> feed_titles = feeds.verify_tag_present_on_feed(driverToUse,tag);
         boolean isVisible = false;
 

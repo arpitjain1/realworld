@@ -17,6 +17,7 @@ public class ApiSteps {
     public void getApiResponse (String tag, String validityCheck, String limit) throws Exception {
         String url = TestConfig.getResource("apiurl");
 
+        // Setting API URL based on limit of a page or all entries
         if (limit.equals("no")) {
             url=url.concat("?tag="+tag);
         } else {
@@ -26,12 +27,14 @@ public class ApiSteps {
         System.out.println("API to be called:"+url);
         Response response = get(url);
 
+        // Parsing response to verify that tags are present in each entry
         System.out.println(response.prettyPrint());
         JsonPath jsonPath = new JsonPath(response.asString());
         ArrayList articles = jsonPath.get("articles");
         int articleCount = jsonPath.get("articlesCount");
         System.out.println("article count:"+articleCount);
 
+        // For calling API with invalid tag, check that there shouldn't be any entry
         if (validityCheck.equalsIgnoreCase("invalid")) {
             if (articleCount!=0 || articles.size()!=0) {
                 Assert.fail(articleCount + " articles obtained for invalid tag:\n"+articles);
@@ -42,6 +45,7 @@ public class ApiSteps {
             }
         }
 
+        // Looping through all entries in response to verify
         for (Object object : articles) {
             LinkedHashMap map = (LinkedHashMap) object;
             Object tagObj = map.get("tagList");

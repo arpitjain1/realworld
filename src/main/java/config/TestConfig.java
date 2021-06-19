@@ -9,7 +9,6 @@ public class TestConfig {
 
     private static String getConfigFor(String configItem) throws Exception {
         if(properties==null){
-//            System.setProperty("PROPERTY_FILE", "build/resources/test/config/env.properties");
             String fileName = System.getProperty("PROPERTY_FILE");
             System.out.println("filename is " + fileName);
             properties = ResourceHandler.loadGradleResource(fileName);

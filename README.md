@@ -21,3 +21,6 @@ Scenario can be executed from IntellIJ by using `Run Scenario` option
 # **Results**
 Cucumber report gets generated post execution, which captures details on pass and fail count, along with failure details.
 Screenshots of both UI and API sample results are attached in the repo.
+
+- UI Tests Report: https://github.com/arpitjain1/realworld/blob/master/cucumber-report-ui.png
+- API Tests Report: https://github.com/arpitjain1/realworld/blob/master/cucumber-report-api.png 
